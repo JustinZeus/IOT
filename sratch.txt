@@ -1,0 +1,6 @@
+make plants grow
+make herbs and carns eat
+carn types
+carn eat different types
+reproduce
+starve

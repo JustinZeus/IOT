@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+       .chart-container {
+        position: absolute;
+        top: 10px;
+        right: 15%;
+        width: 30%;
+        height: 400px;
+        
+      }
+      #chart-canvas {
+        background-color: #FFF;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chart-container">
+      <canvas id="chart-canvas"></canvas>
+    </div>
+    
+    <script src="utils/settings.js"></script>
+    <script src="sketch.js"></script>
+    <script src="objects/carnivore.js"></script>
+    <script src="objects/plant.js"></script>
+    <script src="objects/herbivore.js"></script>
+    <script src="utils/population_chart.js"></script>
+    <form id="settings-form">
+      <h2>Plant Settings</h2>
+      <label for="plant-initial-amount">Initial Amount:</label>
+      <input type="number" id="plant-initial-amount" name="plant.initialAmount" min="0" max="100" step="1" value="50"><br>
+      <label for="plant-max-size">Max Size:</label>
+      <input type="number" id="plant-max-size" name="plant.maxSize" min="0" max="20" step="0.1" value="10"><br>
+      <label for="plant-growth-rate">Growth Rate:</label>
+      <input type="number" id="plant-growth-rate" name="plant.growthRate" min="0" max="1" step="0.01" value="0.1"><br>
+      <label for="plant-energy-multiplier">Energy Multiplier:</label>
+      <input type="number" id="plant-energy-multiplier" name="plant.energyMultiplier" min="0" max="100" step="1" value="20"><br>
+      
+      <h2>Herbivore Settings</h2>
+      <label for="herbivore-initial-amount">Initial Amount:</label>
+      <input type="number" id="herbivore-initial-amount" name="herbivore.initialAmount" min="0" max="100" step="1" value="50"><br>
+      <label for="herbivore-size">Size:</label>
+      <input type="number" id="herbivore-size" name="herbivore.size" min="0" max="20" step="0.1" value="10"><br>
+      <label for="herbivore-energy">Energy:</label>
+      <input type="number" id="herbivore-energy" name="herbivore.energy" min="0" max="2000" step="1" value="1000"><br>
+      <label for="herbivore-energy-depletion">Energy Depletion:</label>
+      <input type="number" id="herbivore-energy-depletion" name="herbivore.energyDepletion" min="0" max="1" step="0.01" value="0.5"><br>
+      <label for="herbivore-reproduction-rate">Reproduction Rate:</label>
+      <input type="number" id="herbivore-reproduction-rate" name="herbivore.reproductionRate" min="0" max="1" step="0.01" value="0.01"><br>
+      <label for="herbivore-reproduction-threshold">Reproduction Threshold:</label>
+      <input type="number" id="herbivore-reproduction-threshold" name="herbivore.reproductionThreshold" min="0" max="1" step="0.01" value="0.5"><br>
+      <label for="herbivore-energy-restoration">Energy Restoration:</label>
+      <input type="number" id="herbivore-energy-restoration" name="herbivore.energyRestoration" min="0" max="1000" step="1" value="250"><br>
+      
+      <h2      Fast Carnivore Settings</h2>
+        <label for="fast-carnivore-initial-amount">Initial Amount:</label>
+        <input type="number" id="fast-carnivore-initial-amount" name="fastCarnivore.initialAmount" min="0" max="100" step="1" value="5"><br>
+        <label for="fast-carnivore-size">Size:</label>
+        <input type="number" id="fast-carnivore-size" name="fastCarnivore.size" min="0" max="20" step="0.1" value="12"><br>
+        <label for="fast-carnivore-energy">Energy:</label>
+        <input type="number" id="fast-carnivore-energy" name="fastCarnivore.energy" min="0" max="2000" step="1" value="2000"><br>
+        <label for="fast-carnivore-energy-depletion">Energy Depletion:</label>
+        <input type="number" id="fast-carnivore-energy-depletion" name="fastCarnivore.energyDepletion" min="0" max="1" step="0.01" value="1"><br>
+        <label for="fast-carnivore-reproduction-rate">Reproduction Rate:</label>
+        <input type="number" id="fast-carnivore-reproduction-rate" name="fastCarnivore.reproductionRate" min="0" max="1" step="0.01" value="0.01"><br>
+        <label for="fast-carnivore-reproduction-threshold">Reproduction Threshold:</label>
+        <input type="number" id="fast-carnivore-reproduction-threshold" name="fastCarnivore.reproductionThreshold" min="0" max="1" step="0.01" value="0.5"><br>
+        <label for="fast-carnivore-energy-restoration">Energy Restoration:</label>
+        <input type="number" id="fast-carnivore-energy-restoration" name="fastCarnivore.energyRestoration" min="0" max="1000" step="1" value="250"><br>
+        
+        <h2>Strong Carnivore Settings</h2>
+        <label for="strong-carnivore-initial-amount">Initial Amount:</label>
+        <input type="number" id="strong-carnivore-initial-amount" name="strongCarnivore.initialAmount" min="0" max="100" step="1" value="2"><br>
+        <label for="strong-carnivore-size">Size:</label>
+        <input type="number" id="strong-carnivore-size" name="strongCarnivore.size" min="0" max="20" step="0.1" value="20"><br>
+        <label for="strong-carnivore-energy">Energy:</label>
+        <input type="number" id="strong-carnivore-energy" name="strongCarnivore.energy" min="0" max="2000" step="1" value="2500"><br>
+        <label for="strong-carnivore-energy-depletion">Energy Depletion:</label>
+        <input type="number" id="strong-carnivore-energy-depletion" name="strongCarnivore.energyDepletion" min="0" max="1" step="0.01" value="1"><br>
+        <label for="strong-carnivore-reproduction-rate">Reproduction      Rate:</label>
+        <input type="number" id="strong-carnivore-reproduction-rate" name="strongCarnivore.reproductionRate" min="0" max="1" step="0.01" value="0.01"><br>
+        <label for="strong-carnivore-reproduction-threshold">Reproduction Threshold:</label>
+        <input type="number" id="strong-carnivore-reproduction-threshold" name="strongCarnivore.reproductionThreshold" min="0" max="1" step="0.01" value="0.5"><br>
+        <label for="strong-carnivore-energy-restoration-herbivore">Energy Restoration Herbivore:</label>
+        <input type="number" id="strong-carnivore-energy-restoration-herbivore" name="strongCarnivore.energyRestorationHerbivore" min="0" max="1000" step="1" value="250"><br>
+        <label for="strong-carnivore-energy-restoration-fast-carnivore">Energy Restoration Fast Carnivore:</label>
+        <input type="number" id="strong-carnivore-energy-restoration-fast-carnivore" name="strongCarnivore.energyRestorationFastCarnivore" min="0" max="1000" step="1" value="350"><br>
+      
+        <input type="submit" value="Save">
+      </form>
+  
+  
+
+</html>
