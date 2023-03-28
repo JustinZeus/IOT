@@ -1,0 +1,19 @@
+make plants grow
+make herbs and carns eat
+carn types
+carn eat different types
+reproduce
+starve
+
+
+I have kept on working on the project with gpt 3.5 and made some progress. I would like to send the code in fragments and discuss it after. Please wait until I say all the code has been sent to comment more than one sentence.
+
+
+
+planten verwijderen
+maar 1 soort herbivoor
+herbivoren zitten op een timer
+carnivoren zitten op een timer, eten geeft meer energie
+als een dier lang genoeg leeft splitten
+sommige carnivoren kunnen ook andere carnivoren eten
+
