@@ -18,6 +18,7 @@ class Creature {
       if (this.hierarchy != 0) {
         this.energy -= this.energyDepletion;
       }
+
       if (this.energy > 0) {
         this.move();
         this.eat(quadtree);
@@ -32,7 +33,7 @@ class Creature {
     move() {
         this.acceleration.add(createVector(random(-1.5, 1.5), random(-1.5, 1.5)));
         this.velocity.add(this.acceleration);
-        this.velocity.limit(4);
+        this.velocity.limit(20);
         this.position.add(this.velocity);
       
         // Add some jittery movement
@@ -79,7 +80,7 @@ class Creature {
           // Check if the two creatures are touching
           if (distance < combinedSize) {
             // If this creature can eat the other creature, remove the other creature and update energy
-            if (this.canEat(other)) {
+            if (this.canEat(other) && !(other.isLastOfSpecies(creatures))) {
               this.energy += Math.min(other.speciesSettings.energyRestoration+this.energy, this.speciesSettings.energy);
               other.die(creatures);
             }
@@ -91,9 +92,9 @@ class Creature {
   
       canEat(creature) {
         // Check if the creature is a Herbivore
-        if (creature.constructor.name === 'Herbivore') {
-          return this.hierarchy > 0;
-        }
+        // if (creature.constructor.name === 'Herbivore') {
+        //   return this.hierarchy > 0;
+        // }
       
         // Check if the creature is within the hierarchy gap constraints
         const hierarchyDifference = this.hierarchy - creature.hierarchy;
@@ -129,16 +130,30 @@ class Creature {
           this.reproductionTimer = this.speciesSettings.reproductionInterval;
         }
       }
-      
-      
-
   
-    die(creatures) {
-      const index = creatures.indexOf(this);
-      if (index !== -1) {
-        creatures.splice(index, 1);
+      die(creatures) {
+        const index = creatures.indexOf(this);
+        if (index !== -1) {
+          if (this.isLastOfSpecies(creatures)) {
+            // If this is the last creature of its species, don't remove it
+            this.energy = this.speciesSettings.energy * this.speciesSettings.reproductionThreshold - 1;
+            return;
+          }
+          creatures.splice(index, 1);
+        }
       }
-    }
+      
+      isLastOfSpecies(creatures) {
+        const creatureType = this.constructor.name;
+        let count = 0;
+        for (const creature of creatures) {
+          if (creature.constructor.name === creatureType) {
+            count++;
+          }
+        }
+        return count < 3;
+      }
+      
   
     edges() {
       if (this.position.x > width + this.size / 2) {

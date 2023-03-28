@@ -6,6 +6,7 @@ class Herbivore extends Creature {
   }
 
   update(creatures, quadtree) {
+    //this.energy -= this.energyDepletion;
 
     // Decrement the reproduction timer
     this.reproductionTimer--;
