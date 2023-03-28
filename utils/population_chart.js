@@ -62,3 +62,11 @@ const populationChartData = {
     frameCounter++;
   }
   
+  function deletePopulationChart() {
+    populationChart.destroy();
+    populationChartData.labels = [];
+    populationChartData.datasets.forEach(dataset => {
+      dataset.data = [];
+    });
+    frameCounter = 0;
+  }

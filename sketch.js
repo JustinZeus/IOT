@@ -1,6 +1,7 @@
 // sketch.js
 const DEBUG = false;
 const creatures = [];
+let pauseSimulation = false;
 
 
 
@@ -55,6 +56,10 @@ function setup() {
 setupPopulationChart(); // Add this line to setup the population chart
 
 function simulationLoop() {
+  if (pauseSimulation) {
+    requestAnimationFrame(simulationLoop);
+    return; // Exit the function immediately
+  }
   // Clear the canvas
   background(83);
 
@@ -80,3 +85,71 @@ function simulationLoop() {
   requestAnimationFrame(simulationLoop);
   updatePopulationChart(); 
 }
+
+function resetSimulation() {
+  // Reset the active values for herbivore and carnivore A to F based on the selected value of the dropdown
+  const dropdown = document.getElementById("carnivore-dropdown");
+  const selectedValue = dropdown.value;
+
+  const hierarchy = settings.hierarchy;
+  for (let i = 0; i < hierarchy.length; i++) {
+    const creatureType = hierarchy[i];
+    const creatureSettingsKey = creatureType[0].toLowerCase() + creatureType.slice(1);
+    const creatureSettings = settings[creatureSettingsKey];
+    if (i <= selectedValue) {
+      creatureSettings.active = true;
+    } else {
+      creatureSettings.active = false;
+    }
+  }
+
+  // Clear the creatures array
+  creatures.length = 0;
+
+  // Add the active creatures back into the creatures array
+  for (const creatureType of hierarchy) {
+    const creatureSettingsKey = creatureType[0].toLowerCase() + creatureType.slice(1);
+    const creatureSettings = settings[creatureSettingsKey];
+    if (creatureSettings.active) {
+      for (let i = 0; i < creatureSettings.numEntities; i++) {
+        let creature;
+        switch (creatureType) {
+          case "Herbivore":
+            creature = new Herbivore(creatureSettings);
+            break;
+          case "CarnivoreA":
+            creature = new CarnivoreA(creatureSettings);
+            break;
+          case "CarnivoreB":
+            creature = new CarnivoreB(creatureSettings);
+            break;
+          case "CarnivoreC":
+            creature = new CarnivoreC(creatureSettings);
+            break;
+          case "CarnivoreD":
+            creature = new CarnivoreD(creatureSettings);
+            break;
+          case "CarnivoreE":
+            creature = new CarnivoreE(creatureSettings);
+            break;
+          case "CarnivoreF":
+            creature = new CarnivoreF(creatureSettings);
+            break;
+        }
+        creatures.push(creature);
+      }
+    }
+  }
+  deletePopulationChart(); 
+  setupPopulationChart();
+}
+
+// Add an event listener for the dropdown change
+const dropdown = document.getElementById("carnivore-dropdown");
+dropdown.addEventListener("change", resetSimulation);
+
+const pauseResumeBtn = document.getElementById("pause-resume-btn");
+    pauseResumeBtn.addEventListener("click", () => {
+      pauseSimulation = !pauseSimulation; // Toggle the boolean value
+      pauseResumeBtn.textContent = pauseSimulation ? "Resume Simulation" : "Pause Simulation";
+    });
